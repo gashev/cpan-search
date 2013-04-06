@@ -63,14 +63,12 @@ sub show_help {
 Usage: cpan-search [options] term [...]
 
 Options:
-
--h,--help Print a help message
--m,--mirror Specify the base URL for the mirror (e.g. http://cpan.cpantesters.org/)
--v,--verbose Turns on the most output
--V,--version Displays software version
+  -h, --help		print a help message
+  -m, --mirror		specify the base URL for the mirror (e.g. http://cpan.cpantesters.org/)
+  -v, --verbose		turns on the most output
+  -V, --version		displays software version
 
 Examples:
-
 cpan-search Moose # search Moose
 HELP
 

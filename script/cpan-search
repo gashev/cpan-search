@@ -37,7 +37,7 @@ my $mirror = 'http://www.cpan.org/';
 Getopt::Long::Configure("bundling");
 Getopt::Long::GetOptions(
     'h|help' => \my $help,
-    'verbose' => \my $verbose,
+    'v|verbose' => \my $verbose,
     'm|mirror=s' => \$mirror,
     'V|version' => \my $version,
 );

@@ -1,0 +1,53 @@
+#!/usr/bin/perl
+
+use strict;
+use warnings;
+
+use File::Temp;
+use LWP::UserAgent;
+use HTTP::Request;
+use IO::Zlib;
+use Data::Dumper;
+
+
+sub getstore {
+    my ($url, $fname) = @_;
+    my $ua = LWP::UserAgent->new(
+        parse_head => 0,
+    );
+    $ua->env_proxy();
+    my $request = HTTP::Request->new(GET => $url);
+    my $response = $ua->request($request, $fname);
+    if (my $died = $response->header('X-Died')) {
+        die "Cannot getstore $url to $fname: $died";
+    } elsif ($response->code == 200) {
+        return 1;
+    } else {
+        die "Cannot getstore $url to $fname: " . $response->status_line;
+    }
+}
+
+sub zopen {
+    IO::Zlib->new($_[0], "rb");
+}
+
+
+my $mirror = 'http://www.cpan.org/';
+my $index_url = "${mirror}/modules/02packages.details.txt.gz";
+
+my $tmpfile = File::Temp->new(UNLINK => 1, SUFFIX => '.gz');
+getstore($index_url, $tmpfile->filename);
+
+my $fh = zopen($tmpfile) or die "cannot open $tmpfile";
+# skip header part
+while (my $line = <$fh>) {
+	last if $line eq "\n";
+}
+
+my $search = $ARGV[0];
+while (my $line = <$fh>) {
+	my ($pkg, $version, $dist) = split /\s+/, $line;
+        next if $version eq 'undef';
+	print $pkg."\n" if $pkg =~ m/$search/i;
+}
+

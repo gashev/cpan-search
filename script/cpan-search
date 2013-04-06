@@ -4,11 +4,10 @@ use strict;
 use warnings;
 
 use File::Temp;
-use LWP::UserAgent;
+use Getopt::Long;
 use HTTP::Request;
 use IO::Zlib;
-use Data::Dumper;
-use Getopt::Long;
+use LWP::UserAgent;
 
 our $VERSION = "0.001";
 

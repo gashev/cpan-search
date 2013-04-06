@@ -8,7 +8,9 @@ use LWP::UserAgent;
 use HTTP::Request;
 use IO::Zlib;
 use Data::Dumper;
+use Getopt::Long;
 
+our $VERSION = "0.001";
 
 sub getstore {
     my ($url, $fname) = @_;
@@ -31,8 +33,61 @@ sub zopen {
     IO::Zlib->new($_[0], "rb");
 }
 
-
 my $mirror = 'http://www.cpan.org/';
+Getopt::Long::Configure("bundling");
+Getopt::Long::GetOptions(
+    'h|help' => \my $help,
+    'verbose' => \my $verbose,
+    'm|mirror=s' => \$mirror,
+    'V|version' => \my $version,
+);
+
+sub show_version {
+	print "cpan-search version $VERSION\n";
+	exit 1;
+}
+
+sub show_usage {
+	my $self = shift;
+
+	die <<USAGE;
+Usage: cpan-search [options] term [...]
+
+Try `cpan-search --help` or `man cpan-search` for more options.
+USAGE
+	return 1;
+}
+
+sub show_help {
+    print <<HELP;
+Usage: cpan-search [options] term [...]
+
+Options:
+
+-h,--help Print a help message
+-m,--mirror Specify the base URL for the mirror (e.g. http://cpan.cpantesters.org/)
+-v,--verbose Turns on the most output
+-V,--version Displays software version
+
+Examples:
+
+cpan-search Moose # search Moose
+HELP
+
+    exit 1;
+}
+
+if ($help) {
+	show_help();
+}
+if ($version) {
+	show_version();
+}
+if (!@ARGV) {
+	show_usage();
+}
+
+
 my $index_url = "${mirror}/modules/02packages.details.txt.gz";
 
 my $tmpfile = File::Temp->new(UNLINK => 1, SUFFIX => '.gz');

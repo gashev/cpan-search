@@ -12,33 +12,31 @@ use LWP::UserAgent;
 our $VERSION = "0.001";
 
 sub getstore {
-    my ($url, $fname) = @_;
-    my $ua = LWP::UserAgent->new(
-        parse_head => 0,
-    );
-    $ua->env_proxy();
-    my $request = HTTP::Request->new(GET => $url);
-    my $response = $ua->request($request, $fname);
-    if (my $died = $response->header('X-Died')) {
-        die "Cannot getstore $url to $fname: $died";
-    } elsif ($response->code == 200) {
-        return 1;
-    } else {
-        die "Cannot getstore $url to $fname: " . $response->status_line;
-    }
+	my ($url, $fname) = @_;
+	my $ua = LWP::UserAgent->new(parse_head => 0);
+	$ua->env_proxy();
+	my $request = HTTP::Request->new(GET => $url);
+	my $response = $ua->request($request, $fname);
+	if (my $died = $response->header('X-Died')) {
+		die "Cannot getstore $url to $fname: $died";
+	} elsif ($response->code == 200) {
+		return 1;
+	} else {
+		die "Cannot getstore $url to $fname: " . $response->status_line;
+	}
 }
 
 sub zopen {
-    IO::Zlib->new($_[0], "rb");
+	IO::Zlib->new($_[0], "rb");
 }
 
 my $mirror = 'http://www.cpan.org/';
 Getopt::Long::Configure("bundling");
 Getopt::Long::GetOptions(
-    'h|help' => \my $help,
-    'v|verbose' => \my $verbose,
-    'm|mirror=s' => \$mirror,
-    'V|version' => \my $version,
+	'h|help'     => \my $help,
+	'v|verbose'  => \my $verbose,
+	'm|mirror=s' => \$mirror,
+	'V|version'  => \my $version,
 );
 
 sub show_version {
@@ -58,7 +56,7 @@ USAGE
 }
 
 sub show_help {
-    print <<HELP;
+	print <<HELP;
 Usage: cpan-search [options] term [...]
 
 Options:
@@ -71,7 +69,7 @@ Examples:
 cpan-search Moose # search Moose
 HELP
 
-    exit 1;
+	exit 1;
 }
 
 if ($help) {

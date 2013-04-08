@@ -98,7 +98,13 @@ my $search = $ARGV[0];
 while (my $line = <$fh>) {
 	my ($pkg, $version, $dist) = split /\s+/, $line;
         next if $version eq 'undef';
-	print $pkg."\n" if $pkg =~ m/$search/i;
+	if ($pkg =~ m/$search/i) {
+		if ($verbose) {
+			printf "%-30s %-7s %-7s\n", $pkg, $version, $dist;
+		} else {
+			printf "%s\n", $pkg;
+		}
+	}
 }
 
 __END__

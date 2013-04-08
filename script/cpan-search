@@ -33,10 +33,11 @@ sub zopen {
 my $mirror = 'http://www.cpan.org/';
 Getopt::Long::Configure("bundling");
 Getopt::Long::GetOptions(
-	'h|help'     => \my $help,
-	'v|verbose'  => \my $verbose,
-	'm|mirror=s' => \$mirror,
-	'V|version'  => \my $version,
+	'h|help'          => \my $help,
+	'v|verbose'       => \my $verbose,
+	'm|mirror=s'      => \$mirror,
+	'p|print-path'    => \my $print_path,
+	'V|version'       => \my $version,
 );
 
 sub show_version {
@@ -62,6 +63,7 @@ Usage: cpan-search [options] term [...]
 Options:
   -h, --help		print a help message
   -m, --mirror		specify the base URL for the mirror (e.g. http://cpan.cpantesters.org/)
+  -p, --print-path      print path
   -v, --verbose		turns on the most output
   -V, --version		displays software version
 
@@ -101,6 +103,8 @@ while (my $line = <$fh>) {
 	if ($pkg =~ m/$search/i) {
 		if ($verbose) {
 			printf "%-30s %-7s %-7s\n", $pkg, $version, $dist;
+		} elsif ($print_path) {
+			printf "%s\n", $dist;
 		} else {
 			printf "%s\n", $pkg;
 		}

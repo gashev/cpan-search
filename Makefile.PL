@@ -6,6 +6,7 @@ WriteMakefile(
 	VERSION_FROM => 'lib/App/cpansearch.pm', # finds \$VERSION
 	AUTHOR       => 'Oleg Gashev (oleg@gashev.net)',
 	ABSTRACT     => 'Search CPAN modules.',
+	EXE_FILES    => ['script/cpan-search'],
 	PREREQ_PM    => {
 		'File::Temp'     => 0,
 		'Getopt::Long'   => 0,

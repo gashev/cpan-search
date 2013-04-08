@@ -6,4 +6,5 @@ Changes
 Makefile.PL
 lib/App/cpansearch.pm
 script/cpan-search
-t/001_load.t
+t/001_compile.t
+t/002_pod.t

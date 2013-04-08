@@ -5,4 +5,5 @@ Todo
 Changes
 Makefile.PL
 lib/App/cpansearch.pm
+script/cpan-search
 t/001_load.t
